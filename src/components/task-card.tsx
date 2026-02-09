@@ -38,7 +38,7 @@ const subagentStatusColor: Record<string, string> = {
 };
 
 export function TaskCard({ task }: { task: Task }) {
-  const isSubagent = task.assignee.startsWith("subagent:");
+  const isSubagent = task.assignee?.startsWith("subagent:") ?? false;
   const avatar = isSubagent ? "🤖" : "⚡";
 
   return (
