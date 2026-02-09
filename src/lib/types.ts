@@ -34,6 +34,76 @@ export interface WorkflowState {
   lastUpdated: string;
 }
 
+// Monitor types
+export interface ThreadInfo {
+  id: string;
+  channel: string;
+  topic: string;
+  lastMessage: string;
+  participants: string[];
+  lastActivity: string;
+  status: "active" | "waiting" | "resolved";
+}
+
+export interface ThreadsState {
+  threads: ThreadInfo[];
+}
+
+export interface SubagentSession {
+  sessionKey: string;
+  task: string;
+  model: string;
+  status: "running" | "completed" | "failed";
+  startedAt: string;
+  completedAt: string | null;
+}
+
+export interface SubagentsState {
+  sessions: SubagentSession[];
+}
+
+export interface PRWatchState {
+  knownBugbotComments: Record<string, number[]>;
+  lastCIStatus: Record<string, string>;
+  addressedComments: string[];
+  inProgressBySubagent: Record<string, string>;
+  overnightFixes: string[];
+  lastChecked: string;
+}
+
+export interface PRState {
+  knownPRs: number[];
+  lastCheckTs: number;
+}
+
+export interface FeaturebaseState {
+  lastConversationId: string;
+  knownConversationIds: string[];
+  knownPostIds: string[];
+  lastSupportCheckTs: number;
+  completedConversationIds?: string[];
+}
+
+export interface ActivityEntry {
+  timestamp: string;
+  action: string;
+  detail: string;
+  source: "heartbeat" | "slack" | "cron" | "manual";
+}
+
+export interface ActivityLogState {
+  log: ActivityEntry[];
+}
+
+export interface MonitorData {
+  threads: ThreadsState;
+  subagents: SubagentsState;
+  prWatch: PRWatchState;
+  prState: PRState;
+  featurebase: FeaturebaseState;
+  activityLog: ActivityLogState;
+}
+
 export const COLUMNS: { key: TaskStatus; label: string }[] = [
   { key: "inbox", label: "Inbox" },
   { key: "in_progress", label: "In Progress" },
