@@ -1,6 +1,6 @@
 "use client";
 
-import type { ThreadsState } from "@/lib/types";
+import type { ThreadsState, ThreadInfo } from "@/lib/types";
 
 function timeAgo(ts: string): string {
   const ms = Date.now() - new Date(ts).getTime();
@@ -17,7 +17,7 @@ const statusDot: Record<string, string> = {
   resolved: "bg-green-400",
 };
 
-export function ThreadsPanel({ data }: { data: ThreadsState }) {
+export function ThreadsPanel({ data, onSelect }: { data: ThreadsState; onSelect?: (t: ThreadInfo) => void }) {
   return (
     <div className="flex flex-col h-full bg-[#0d0d14] rounded-lg border border-blue-500/20 overflow-hidden">
       <div className="px-3 py-2 border-b border-blue-500/10 flex items-center gap-2">
@@ -38,7 +38,8 @@ export function ThreadsPanel({ data }: { data: ThreadsState }) {
         {data.threads.map((t) => (
           <div
             key={t.id}
-            className="bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-blue-500/20 transition-colors"
+            onClick={() => onSelect?.(t)}
+            className="bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-blue-500/20 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-1.5">
               <span className={`w-1.5 h-1.5 rounded-full ${statusDot[t.status] || "bg-white/30"}`} />

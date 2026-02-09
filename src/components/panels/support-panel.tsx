@@ -3,7 +3,7 @@
 import { useState } from "react";
 import type { FeaturebaseState } from "@/lib/types";
 
-export function SupportPanel({ data }: { data: FeaturebaseState }) {
+export function SupportPanel({ data, onSelect }: { data: FeaturebaseState; onSelect?: (id: string) => void }) {
   const [completing, setCompleting] = useState<string | null>(null);
   const [localCompleted, setLocalCompleted] = useState<string[]>([]);
 
@@ -47,14 +47,15 @@ export function SupportPanel({ data }: { data: FeaturebaseState }) {
         {activeIds.map((id) => (
           <div
             key={id}
-            className="bg-white/[0.03] rounded px-2.5 py-1 border border-white/5 hover:border-orange-500/20 transition-colors flex items-center gap-2"
+            onClick={() => onSelect?.(id)}
+            className="bg-white/[0.03] rounded px-2.5 py-1 border border-white/5 hover:border-orange-500/20 transition-colors flex items-center gap-2 cursor-pointer"
           >
             <span className="text-[11px] font-mono text-orange-300">
               #{id}
             </span>
             <span className="flex-1" />
             <button
-              onClick={() => markComplete(id)}
+              onClick={(e) => { e.stopPropagation(); markComplete(id); }}
               disabled={completing === id}
               className="text-[11px] hover:bg-green-500/20 rounded px-1 transition-colors disabled:opacity-30"
               title="Mark complete"

@@ -19,9 +19,11 @@ function ciGlow(status: string): string {
 export function PRWatchPanel({
   prWatch,
   prState,
+  onSelect,
 }: {
   prWatch: PRWatchState;
   prState: PRState;
+  onSelect?: (data: { prNumber: string; ciStatus: string; bugbotComments: number[]; inProgress?: string }) => void;
 }) {
   const prNumbers = Object.keys(prWatch.lastCIStatus || {}).sort(
     (a, b) => Number(b) - Number(a),
@@ -51,7 +53,8 @@ export function PRWatchPanel({
           return (
             <div
               key={pr}
-              className={`bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-cyan-500/20 transition-colors ${ciGlow(ci)}`}
+              onClick={() => onSelect?.({ prNumber: pr, ciStatus: ci, bugbotComments: prWatch.knownBugbotComments?.[pr] || [], inProgress })}
+              className={`bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-cyan-500/20 transition-colors cursor-pointer ${ciGlow(ci)}`}
             >
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-mono text-cyan-300">

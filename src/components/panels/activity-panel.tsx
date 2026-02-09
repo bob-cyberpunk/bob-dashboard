@@ -1,6 +1,6 @@
 "use client";
 
-import type { ActivityLogState } from "@/lib/types";
+import type { ActivityLogState, ActivityEntry } from "@/lib/types";
 
 const sourceBadge: Record<string, string> = {
   heartbeat: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -9,7 +9,7 @@ const sourceBadge: Record<string, string> = {
   manual: "bg-orange-500/20 text-orange-400 border-orange-500/30",
 };
 
-export function ActivityPanel({ data }: { data: ActivityLogState }) {
+export function ActivityPanel({ data, onSelect }: { data: ActivityLogState; onSelect?: (e: ActivityEntry) => void }) {
   const entries = (data.log || [])
     .slice()
     .sort(
@@ -38,7 +38,8 @@ export function ActivityPanel({ data }: { data: ActivityLogState }) {
         {entries.map((entry, i) => (
           <div
             key={`${entry.timestamp}-${i}`}
-            className="flex items-start gap-1.5 px-1.5 py-1 hover:bg-white/[0.02] rounded transition-colors"
+            onClick={() => onSelect?.(entry)}
+            className="flex items-start gap-1.5 px-1.5 py-1 hover:bg-white/[0.02] rounded transition-colors cursor-pointer"
           >
             <span className="text-[9px] font-mono text-white/20 shrink-0 mt-0.5 w-12">
               {new Date(entry.timestamp).toLocaleTimeString([], {

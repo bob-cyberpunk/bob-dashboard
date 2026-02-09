@@ -8,6 +8,8 @@ import { TaskCard } from "@/components/task-card";
 import type { Task, WorkflowState, TaskStatus, MonitorData } from "@/lib/types";
 import { COLUMNS } from "@/lib/types";
 import { MonitorGrid } from "@/components/monitor-grid";
+import { DetailProvider, useDetail } from "@/lib/detail-context";
+import { DetailPanel } from "@/components/detail-panel";
 
 const columnAccent: Record<TaskStatus, string> = {
   inbox: "border-t-white/20",
@@ -26,6 +28,14 @@ const columnCount: Record<TaskStatus, string> = {
 };
 
 export function KanbanBoard() {
+  return (
+    <DetailProvider>
+      <KanbanBoardInner />
+    </DetailProvider>
+  );
+}
+
+function KanbanBoardInner() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [connected, setConnected] = useState(false);
@@ -61,6 +71,8 @@ export function KanbanBoard() {
 
     return () => es.close();
   }, []);
+
+  const { open: openDetail } = useDetail();
 
   const tasksByStatus = (status: TaskStatus) =>
     tasks.filter((t) => t.status === status);
@@ -126,7 +138,9 @@ export function KanbanBoard() {
                   <ScrollArea className="flex-1 p-2">
                     <div className="space-y-2">
                       {colTasks.map((task) => (
-                        <TaskCard key={task.id} task={task} />
+                        <div key={task.id} onClick={() => openDetail({ type: "task", data: task })} className="cursor-pointer">
+                          <TaskCard task={task} />
+                        </div>
                       ))}
                       {colTasks.length === 0 && (
                         <div className="text-center text-white/10 text-xs py-6 font-mono">
@@ -144,6 +158,7 @@ export function KanbanBoard() {
             <MonitorGrid data={monitor} />
           </div>
         </main>
+        <DetailPanel />
       </div>
     </TooltipProvider>
   );

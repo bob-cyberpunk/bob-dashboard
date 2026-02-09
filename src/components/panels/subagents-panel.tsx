@@ -1,6 +1,6 @@
 "use client";
 
-import type { SubagentsState } from "@/lib/types";
+import type { SubagentsState, SubagentSession } from "@/lib/types";
 
 function duration(startedAt: string, completedAt: string | null): string {
   const end = completedAt ? new Date(completedAt).getTime() : Date.now();
@@ -16,7 +16,7 @@ const statusStyles: Record<string, string> = {
   failed: "text-red-400",
 };
 
-export function SubagentsPanel({ data }: { data: SubagentsState }) {
+export function SubagentsPanel({ data, onSelect }: { data: SubagentsState; onSelect?: (s: SubagentSession) => void }) {
   const running = data.sessions.filter((s) => s.status === "running").length;
   return (
     <div className="flex flex-col h-full bg-[#0d0d14] rounded-lg border border-purple-500/20 overflow-hidden">
@@ -41,7 +41,8 @@ export function SubagentsPanel({ data }: { data: SubagentsState }) {
         {data.sessions.map((s) => (
           <div
             key={s.sessionKey}
-            className="bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-purple-500/20 transition-colors"
+            onClick={() => onSelect?.(s)}
+            className="bg-white/[0.03] rounded px-2.5 py-1.5 border border-white/5 hover:border-purple-500/20 transition-colors cursor-pointer"
           >
             <div className="flex items-center gap-1.5">
               {s.status === "running" && (
