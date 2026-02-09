@@ -13,6 +13,8 @@ import { DetailPanel } from "@/components/detail-panel";
 
 const columnAccent: Record<TaskStatus, string> = {
   inbox: "border-t-white/20",
+  scheduled: "border-t-blue-500",
+  todo: "border-t-orange-500",
   in_progress: "border-t-cyan-500",
   delegated: "border-t-purple-500",
   review: "border-t-yellow-500",
@@ -21,6 +23,8 @@ const columnAccent: Record<TaskStatus, string> = {
 
 const columnCount: Record<TaskStatus, string> = {
   inbox: "bg-white/10 text-white/50",
+  scheduled: "bg-blue-500/20 text-blue-400",
+  todo: "bg-orange-500/20 text-orange-400",
   in_progress: "bg-cyan-500/20 text-cyan-400",
   delegated: "bg-purple-500/20 text-purple-400",
   review: "bg-yellow-500/20 text-yellow-400",
@@ -116,7 +120,7 @@ function KanbanBoardInner() {
 
         <main className="relative z-10 p-4 flex flex-col h-[calc(100vh-3.5rem)] gap-3">
           {/* Kanban — top 60% */}
-          <div className="grid grid-cols-5 gap-3 flex-[6] min-h-0">
+          <div className="grid grid-cols-7 gap-3 flex-[6] min-h-0">
             {COLUMNS.map((col) => {
               const colTasks = tasksByStatus(col.key);
               return (

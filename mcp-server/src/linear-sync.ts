@@ -8,7 +8,9 @@ const ENG_TEAM = "9ea9dadc-eb70-4647-854d-2b413d82068a";
 
 function mapStatus(state: string): Task["status"] {
   const s = state.toLowerCase();
-  if (["backlog", "triage", "unstarted", "todo"].includes(s)) return "inbox";
+  if (["backlog", "triage"].includes(s)) return "inbox";
+  if (["unstarted"].includes(s)) return "scheduled";
+  if (["todo"].includes(s)) return "todo";
   if (["started", "in progress"].includes(s)) return "in_progress";
   if (["in review"].includes(s)) return "review";
   if (["done", "completed", "cancelled", "canceled"].includes(s)) return "done";

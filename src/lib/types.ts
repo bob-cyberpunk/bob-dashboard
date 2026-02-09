@@ -1,5 +1,7 @@
 export type TaskStatus =
   | "inbox"
+  | "scheduled"
+  | "todo"
   | "in_progress"
   | "delegated"
   | "review"
@@ -106,6 +108,8 @@ export interface MonitorData {
 
 export const COLUMNS: { key: TaskStatus; label: string }[] = [
   { key: "inbox", label: "Inbox" },
+  { key: "scheduled", label: "Scheduled" },
+  { key: "todo", label: "Todo" },
   { key: "in_progress", label: "In Progress" },
   { key: "delegated", label: "Delegated" },
   { key: "review", label: "In Review" },
